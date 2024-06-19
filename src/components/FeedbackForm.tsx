@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-const MAX_CHARACTERS = 150;
+import { MAX_CHARACTERS } from "../lib/constants";
 
 export default function FeedbackForm() {
   const [text, setText] = useState("");
@@ -10,7 +9,12 @@ export default function FeedbackForm() {
     <form className="form">
       <textarea
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => {
+          if (e.target.value.length > MAX_CHARACTERS) {
+            return;
+          }
+          setText(e.target.value);
+        }}
         id="feedback-textarea"
         placeholder="x"
         spellCheck={false}
