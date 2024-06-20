@@ -3,17 +3,13 @@ import Logo from "../Logo";
 import PageHeading from "../PageHeading";
 import Pattern from "../Pattern";
 
-type HeaderProps = {
-  handleAddFeedbackItem: (text: string) => void;
-};
-
-export default function Header({ handleAddFeedbackItem }: HeaderProps) {
+export default function Header() {
   return (
     <header>
       <Pattern />
       <Logo />
       <PageHeading />
-      <FeedbackForm onAddFeedbackItem={handleAddFeedbackItem} />
+      <FeedbackForm />
     </header>
   );
 }

@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { MAX_CHARACTERS } from "../../lib/constants";
+import { useFeedbackItemsStore } from "../../stores/feedbackItemsStore";
 
-type FeedbackFormProps = {
-  onAddFeedbackItem: (text: string) => void;
-};
-export default function FeedbackForm({ onAddFeedbackItem }: FeedbackFormProps) {
+export default function FeedbackForm() {
   const [text, setText] = useState("");
   const [showValidIndicator, setShowValidIndicator] = useState(false);
   const [showInValidIndicator, setShowInValidIndicator] = useState(false);
+  const addFeedback = useFeedbackItemsStore((state) => state.addFeedback);
 
   const remainingCharachters = MAX_CHARACTERS - text.length;
 
@@ -21,7 +20,7 @@ export default function FeedbackForm({ onAddFeedbackItem }: FeedbackFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (text && text.includes("#") && text.length >= 5) {
-      onAddFeedbackItem(text);
+      addFeedback(text);
       setText("");
       setShowValidIndicator(true);
       setTimeout(() => setShowValidIndicator(false), 2000);

@@ -1,19 +1,15 @@
 import FeedbackItem from "./FeedbackItem";
 import Spinner from "../Spinner";
 import ErrorMessage from "../ErrorMessage";
-import { FeedbackItemType } from "../../lib/types";
+import { useFeedbackItemsStore } from "../../stores/feedbackItemsStore";
 
-type FeedbackListProps = {
-  error: string;
-  isLoading: boolean;
-  feedbackItems: FeedbackItemType[];
-};
+export default function FeedbackList() {
+  const feedbackItems = useFeedbackItemsStore((state) =>
+    state.getFilteredFeedbackItems()
+  );
+  const isLoading = useFeedbackItemsStore((state) => state.isLoading);
+  const error = useFeedbackItemsStore((state) => state.error);
 
-export default function FeedbackList({
-  error,
-  isLoading,
-  feedbackItems,
-}: FeedbackListProps) {
   return (
     <ol className="feedback-list">
       {error && <ErrorMessage message={error} />}
