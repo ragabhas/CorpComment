@@ -1,16 +1,8 @@
 import { TriangleUpIcon } from "@radix-ui/react-icons";
+import { FeedbackItemType } from "../lib/types";
 
 type FeedbackItemProps = {
   feedbackItem: FeedbackItemType;
-};
-
-export type FeedbackItemType = {
-  upvoteCount: number;
-  badgeLetter: string;
-  company: string;
-  text: string;
-  daysAgo: number;
-  id: number;
 };
 
 export default function FeedbackItem({ feedbackItem }: FeedbackItemProps) {
