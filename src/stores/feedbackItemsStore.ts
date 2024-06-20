@@ -8,9 +8,9 @@ type FeedbackItemStore = {
   selectedCompany: string;
   getFilteredFeedbackItems: () => FeedbackItemType[];
   getCompanyList: () => string[];
-  addFeedback: (text: string) => void;
+  addFeedback: (text: string) => Promise<void>;
   selectCompany: (company: string) => void;
-  fetchFeedbackItems: () => void;
+  fetchFeedbackItems: () => Promise<void>;
 };
 
 export const useFeedbackItemsStore = create<FeedbackItemStore>((set, get) => ({
