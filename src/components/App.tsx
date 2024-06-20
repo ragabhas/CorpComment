@@ -1,13 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FeedbackItemType } from "../lib/types";
-import Container from "./Container";
-import Footer from "./Footer";
-import HashtagList from "./HashtagList";
+import Container from "./layout/Container";
+import Footer from "./layout/Footer";
+import HashtagList from "./hashtag/HashtagList";
 
 function App() {
   const [feedbackItems, setFeedbackItems] = useState<FeedbackItemType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [selectedCompany, setSelectedCompany] = useState<string>("");
+
+  const companyList = useMemo(
+    () =>
+      feedbackItems
+        .map((feedbackItem) => feedbackItem.company)
+        .filter((company, index, array) => array.indexOf(company) === index),
+    [feedbackItems]
+  );
+
+  const filteredFeedbackItems = useMemo(
+    () =>
+      selectedCompany
+        ? feedbackItems.filter(
+            (feedbackItem) => feedbackItem.company === selectedCompany
+          )
+        : feedbackItems,
+    [feedbackItems, selectedCompany]
+  );
+
+  const handleSelectCompany = (company: string) => {
+    setSelectedCompany((selected) => (selected === company ? "" : company));
+  };
 
   useEffect(() => {
     const fetchFeedbackItems = async () => {
@@ -50,10 +73,11 @@ function App() {
       "https://bytegrad.com/course-assets/projects/corpcomment/api/feedbacks",
       {
         method: "POST",
+        body: JSON.stringify(newFeedbackItem),
         headers: {
+          Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newFeedbackItem),
       }
     );
   };
@@ -63,11 +87,14 @@ function App() {
       <Footer />
       <Container
         error={error}
-        feedbackItems={feedbackItems}
+        feedbackItems={filteredFeedbackItems}
         isLoading={isLoading}
         handleAddFeedbackItem={handleAddFeedback}
       />
-      <HashtagList />
+      <HashtagList
+        companyList={companyList}
+        handleSelectCompany={handleSelectCompany}
+      />
     </div>
   );
 }
